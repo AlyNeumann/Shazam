@@ -7,11 +7,11 @@ import {
 
 export default class HomeScreen extends React.Component {
     render() {
-      return (
-        <View>
-          <Text>ShazamFest</Text>
-          <Image source={require('./images/logo.png')}/>
-        </View>
-      );
+        return (
+            <View>
+                <Text>ShazamFest</Text>
+                <Image source={require('./images/logo.png')} />
+            </View>
+        );
     }
-  }
+}
