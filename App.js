@@ -2,21 +2,25 @@ import React from 'react';
 import {
   Text,
   View,
-  SafeAreaView
+  SafeAreaView,
+  AppRegistry
 } from 'react-native';
 import HomeScreen from './screens/Home';
 import ScheduleScreen from './screens/Schedule';
 import GalleryScreen from './screens/Gallery';
 import ChatScreen from './screens/Chat';
 import { createMaterialTopTabNavigator } from 'react-navigation'
+
+
 // import styled from 'styled-components'
 
-export default class App extends React.Component{
-  render(){
-    return(
-      <SafeAreaView style={{ flex: 1, backgroundColor:'#f2f2f2' }}>
-        <AppTabNavigator/>
-      </SafeAreaView>
+export default class App extends React.Component {
+  render() {
+    return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
+          <AppTabNavigator />
+        </SafeAreaView>
+       
     )
   }
 }
@@ -29,8 +33,8 @@ const AppTabNavigator = createMaterialTopTabNavigator({
       tabBarLabel: 'Home'
     }
   },
-  Schedule: { 
-    screen: ScheduleScreen 
+  Schedule: {
+    screen: ScheduleScreen
   },
   Gallery: {
     screen: GalleryScreen
@@ -43,13 +47,13 @@ const AppTabNavigator = createMaterialTopTabNavigator({
     order: ['Home', 'Schedule', 'Gallery', 'Chat'],
     tabBarPosition: 'bottom',
     swipeEnabled: true,
-    tabBarOptions:{
-      activeTintColor:'red',
-      inactiveTintColor:'grey',
+    tabBarOptions: {
+      activeTintColor: 'red',
+      inactiveTintColor: 'grey',
       upperCaseLabel: 'false',
       pressOpacity: 3,
-      style:{
-        backgroundColor:'#f2f2f2',
+      style: {
+        backgroundColor: '#f2f2f2',
         borderTopWidth: 1,
         borderTopColor: 'grey'
       },
@@ -66,3 +70,6 @@ const AppTabNavigator = createMaterialTopTabNavigator({
   })
 
 
+
+  
+  AppRegistry.registerComponent('ShazamFestApp', () => ShazamFestApp);
