@@ -6,13 +6,65 @@ import {
     Alert,
     Image
 } from 'react-native';
+import * as firebase from 'firebase';
+import { FormLabel, FormInput } from 'react-native-elements';
 
+
+firebase.initializeApp(
+    {
+        apiKey: "AIzaSyAVp7GFalrYCNqPqex0zTMTXguDXsmRghk",
+        authDomain: "shazamfestapp.firebaseapp.com",
+        databaseURL: "https://shazamfestapp.firebaseio.com",
+        projectId: "shazamfestapp",
+        storageBucket: "shazamfestapp.appspot.com",
+        messagingSenderId: "332925247143"
+    }
+)
 
 
 export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { userInfo: null };
+        this.state = {
+            email: '',
+            password: '',
+            error: '',
+            loading: false,
+            userInfo: null
+        };
+    }
+    onLoginPress() {
+        this.setState({ error: '', loading: true });
+        const { email, password } = this.state;
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(() => {
+                this.setState({ error: '', loading: false });
+            })
+            .catch(() => {
+                this.setState({ error: 'Authentication failed', loading: false });
+            })
+    }
+    onSignUpPress() {
+        this.setState({ error: '', loading: true });
+        const { email, password } = this.state;
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                this.setState({ error: '', loading: false });
+            })
+            .catch(() => {
+                this.setState({ error: 'Authentication failed', loading: false })
+            })
+    }
+    renderButtonOrLoading = () => {
+        if (this.state.loading) {
+            return <Text> Loading... </Text>
+        }
+        return <View>
+            <Button
+                onPress={this.onLoginPress.bind(this)} title="Login" />
+            <Button
+                onPress={this.onSignUpPress.bind(this)} title="Sign Up" />
+        </View>
     }
     async logIn() {
         const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('463689234063252', {
@@ -42,14 +94,29 @@ export default class LoginScreen extends React.Component {
             </View>
         )
     }
+    onChangeEmail = (email) => {
+        return this.setState({ email })
+    }
+    onChangePassword = (password) => {
+        return this.setState({ password })
+    }
     render() {
         return (
             <View>
-                <Text>ShazamFest</Text>
-                {/* <Button onPress={this.logIn.bind(this)} title='Login with Facebook' /> */}
-                {/* <Image source={require('./images/logo.png')} /> */}
-                {!this.state.userInfo ? (<Button onPress={this.logIn.bind(this)} title='Login with Facebook' />): (this._renderUserInfo())}
-                
+                <FormLabel> Email </FormLabel>
+                <FormInput 
+                value={this.state.email} 
+                onChangeText={this.onChangeEmail} />
+                <FormLabel> PassWord </FormLabel>
+                <FormInput 
+                value={this.state.password} 
+                secureTextEntry
+                placeholder="********"
+                onChangeText={this.onChangePassword} />
+                <Text>{this.state.error}</Text>
+                {this.renderButtonOrLoading()}
+                {!this.state.userInfo ? (<Button onPress={this.logIn.bind(this)} title='Login with Facebook' />) : (this._renderUserInfo())}
+
             </View>
         );
     }
